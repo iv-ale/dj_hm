@@ -10,22 +10,40 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Секреты и режим отладки храним в .env (файл в .gitignore).
+# Значения по умолчанию нужны только чтобы проект запускался без .env.
+load_dotenv(BASE_DIR / ".env")
+
+
+def env_list(name: str, default: str = "") -> list[str]:
+    """Читает переменную окружения со списком через запятую."""
+    raw = os.getenv(name, default)
+    return [item.strip() for item in raw.split(",") if item.strip()]
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-09gifoh5-t9=t#@y6kr36i(mya-davc=d5nr8faj#515$u@8hk'
+SECRET_KEY = os.getenv(
+    "SECRET_KEY",
+    "django-insecure-change-me-in-dot-env-file",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Строка "True" из .env превращается в True, любое другое значение — в False.
+DEBUG = os.getenv("DEBUG", "False").strip().lower() in {"1", "true", "yes", "on"}
 
-ALLOWED_HOSTS = []
+# Например: ALLOWED_HOSTS=127.0.0.1,localhost,192.168.1.10
+ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", "127.0.0.1,localhost")
 
 
 # Application definition
@@ -39,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'users',
+    'shop',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +75,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
