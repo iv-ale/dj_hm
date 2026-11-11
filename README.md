@@ -14,8 +14,6 @@
 
 ## Быстрый старт
 
-```bash
-# 1. Виртуальное окружение
 python -m venv venv
 venv\Scripts\activate          # Windows
 # source venv/bin/activate     # macOS / Linux
