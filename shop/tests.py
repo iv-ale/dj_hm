@@ -5,7 +5,7 @@ class ShopPagesTests(TestCase):
     def test_home_page(self):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Это учебный сайтм агазин")
+        self.assertContains(response, "Это учебный сайт-магазин")
 
     def test_about_page(self):
         response = self.client.get("/about/")
@@ -18,7 +18,7 @@ class ShopPagesTests(TestCase):
         self.assertContains(response, "student@example.com")
 
     def test_hello_page(self):
-        response = self.client.get("/hello/Эмииль/")
+        response = self.client.get("/hello/Эмиль/")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Привет, Эмиль!")
 

@@ -20,7 +20,7 @@ class ShopPagesTests(TestCase):
     def test_hello_page(self):
         response = self.client.get("/hello/Эмииль/")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Привет, Эмиль!")
+        self.assertContains(response, "Привет Эмиль!")
 
     def test_hello_escapes_html(self):
         response = self.client.get("/hello/%3Cb%3E/")
