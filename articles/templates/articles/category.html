@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Категория: {{ category.name }}{% endblock %}
+
+{% block content %}
+<p><a class="back" href="{% url 'article_list' %}">← Все статьи</a></p>
+
+<h1>Категория: {{ category.name }}</h1>
+<p class="muted">Статей в категории: {{ articles|length }}</p>
+
+{% if not articles %}
+    <p>В этой категории пока нет статей.</p>
+{% endif %}
+
+<ul class="list">
+    {% for article in articles %}
+    <li>
+        <h2><a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a></h2>
+        <p class="muted">{{ article.created_at|date:"d.m.Y H:i" }}</p>
+        <p>{{ article.text|truncatewords:40 }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

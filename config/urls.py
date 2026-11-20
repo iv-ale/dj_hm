@@ -11,4 +11,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # Все маршруты приложения shop подключены от корня сайта.
     path("", include("shop.urls")),
+    # Маршруты приложения articles (урок 49): /articles/, /category/<slug>/.
+    path("", include("articles.urls")),
 ]

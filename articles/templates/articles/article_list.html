@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Статьи{% endblock %}
+
+{% block content %}
+<h1>Статьи</h1>
+
+<form class="search" method="get" action="{% url 'article_list' %}">
+    <input type="search" name="q" value="{{ q }}" placeholder="Поиск по заголовку…">
+    <button type="submit">Искать</button>
+</form>
+
+{% if q %}
+    <p class="muted">Найдено по запросу «{{ q }}»: {{ page_obj.paginator.count }}</p>
+{% endif %}
+
+<div class="cats">
+    <a href="{% url 'article_list' %}" class="{% if not q %}active{% endif %}">Все</a>
+    {% for c in categories %}
+        <a href="{% url 'category_detail' c.slug %}">{{ c.name }}</a>
+    {% endfor %}
+</div>
+
+{% if not articles %}
+    <p>Ничего не найдено. Попробуйте другой запрос.</p>
+{% endif %}
+
+<ul class="list">
+    {% for article in articles %}
+    <li>
+        <h2><a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a></h2>
+        <p class="muted">
+            {{ article.created_at|date:"d.m.Y H:i" }} ·
+            <a href="{% url 'category_detail' article.category.slug %}">{{ article.category.name }}</a>
+        </p>
+        <p>{{ article.text|truncatewords:40 }}</p>
+    </li>
+    {% endfor %}
+</ul>
+
+{% if is_paginated %}
+<nav class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="{% url 'article_list' %}?q={{ q|urlencode }}&page={{ page_obj.previous_page_number }}">← Назад</a>
+    {% endif %}
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+        <a href="{% url 'article_list' %}?q={{ q|urlencode }}&page={{ page_obj.next_page_number }}">Вперёд →</a>
+    {% endif %}
+</nav>
+{% endif %}
+{% endblock %}
