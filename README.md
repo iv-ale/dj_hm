@@ -1,8 +1,31 @@
 # Django-проект `config` — урок 45 «Запуск и базовая настройка первого сервера»
 
 Учебный проект по Django. Внутри — проект `config` и приложения:
-`articles` (урок 49), `shop` (урок 45), `books` (админка библиотеки),
+`articles` (уроки 49–50), `shop` (урок 45), `books` (админка библиотеки),
 `blog` и `users` (из урока 44).
+
+## Урок 50 — Работа с шаблонами и формами
+
+* `templates/base.html` — общий каркас (шапка с меню, подвал, сообщения
+  `messages`), все страницы блога наследуют его;
+* дата статьи `|date:"d.m.Y"` и превью `|truncatewords:20`;
+* создание `/articles/new/` и редактирование `/articles/<id>/edit/` через
+  `ArticleForm(ModelForm)` с валидацией `clean_title` (заголовок ≥ 5 символов,
+  ошибки выводятся под полем);
+* челлендж: форма обратной связи `/feedback/` (`forms.Form`), модель
+  `Feedback`, `django.contrib.messages` и Bootstrap 5 через CDN.
+
+Подробности и критерии — в `Отчёт_ДЗ_Шаблоны_и_Формы.md`.
+
+| Список и статья | Форма и валидация |
+|---|---|
+| ![Список](screenshots/50-01-list.png) | ![Создание](screenshots/50-03-create.png) |
+| ![Статья](screenshots/50-02-detail.png) | ![Валидация](screenshots/50-04-validation.png) |
+
+| Редактирование | Обратная связь и успех |
+|---|---|
+| ![Редактирование](screenshots/50-05-edit.png) | ![Feedback](screenshots/50-06-feedback.png) |
+| | ![Успех](screenshots/50-07-feedback-success.png) |
 
 ## Урок 49 — Маршрутизация (URLs) и логика представлений (Views)
 

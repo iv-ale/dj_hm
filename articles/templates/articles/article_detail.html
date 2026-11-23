@@ -7,8 +7,14 @@
 
 <h1>{{ article.title }}</h1>
 <p class="muted">
-    {{ article.created_at|date:"d.m.Y H:i" }} ·
+    {{ article.created_at|date:"d.m.Y" }} ·
     <a href="{% url 'category_detail' article.category.slug %}">{{ article.category.name }}</a>
+</p>
+
+<p>
+    <a class="btn btn-sm btn-outline-primary" href="{% url 'article_edit' article.pk %}">
+        Редактировать
+    </a>
 </p>
 
 <div class="article-body">

@@ -5,9 +5,19 @@
 {% block content %}
 <h1>Статьи</h1>
 
+<a href="{% url 'article_create' %}" class="btn btn-success mb-3">
+    + Новая статья
+</a>
+
 <form class="search" method="get" action="{% url 'article_list' %}">
-    <input type="search" name="q" value="{{ q }}" placeholder="Поиск по заголовку…">
-    <button type="submit">Искать</button>
+    <input
+        type="search"
+        name="q"
+        value="{{ q }}"
+        placeholder="Поиск по заголовку…"
+        class="form-control"
+    >
+    <button type="submit" class="btn btn-primary">Искать</button>
 </form>
 
 {% if q %}
@@ -30,10 +40,10 @@
     <li>
         <h2><a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a></h2>
         <p class="muted">
-            {{ article.created_at|date:"d.m.Y H:i" }} ·
+            {{ article.created_at|date:"d.m.Y" }} ·
             <a href="{% url 'category_detail' article.category.slug %}">{{ article.category.name }}</a>
         </p>
-        <p>{{ article.text|truncatewords:40 }}</p>
+        <p>{{ article.text|truncatewords:20 }}</p>
     </li>
     {% endfor %}
 </ul>

@@ -1,6 +1,8 @@
-from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, ListView
 
+from .forms import ArticleForm, FeedbackForm
 from .models import Article, Category
 
 
@@ -50,4 +52,57 @@ def category_detail(request, slug):
         request,
         'articles/category.html',
         {'category': category, 'articles': articles},
+    )
+
+
+def article_create(request):
+    """Создание статьи: /articles/new/ через ModelForm (урок 50, уровень 2)."""
+    form = ArticleForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        article = form.save()
+        messages.success(request, f'Статья «{article.title}» создана.')
+        return redirect('article_detail', article.pk)
+    return render(
+        request,
+        'articles/form.html',
+        {'form': form, 'page_title': 'Новая статья'},
+    )
+
+
+def article_edit(request, id):
+    """Редактирование статьи: /articles/<id>/edit/ (та же форма с instance=)."""
+    article = get_object_or_404(Article, pk=id)
+    form = ArticleForm(request.POST or None, instance=article)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Изменения сохранены.')
+        return redirect('article_detail', article.pk)
+    return render(
+        request,
+        'articles/form.html',
+        {
+            'form': form,
+            'page_title': f'Редактирование: {article.title}',
+            'article': article,
+        },
+    )
+
+
+def feedback(request):
+    """Форма обратной связи: /feedback/ (урок 50, челлендж)."""
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request,
+                'Спасибо! Ваше сообщение отправлено.',
+            )
+            return redirect('feedback')
+    else:
+        form = FeedbackForm()
+    return render(
+        request,
+        'articles/feedback.html',
+        {'form': form},
     )

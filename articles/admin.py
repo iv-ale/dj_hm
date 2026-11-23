@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Article, Category
+from .models import Article, Category, Feedback
 
 
 @admin.register(Category)
@@ -13,6 +13,13 @@ class CategoryAdmin(admin.ModelAdmin):
     @admin.display(description='Статей')
     def articles_count(self, obj):
         return obj.articles.count()
+
+
+@admin.register(Feedback)
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'created_at')
+    search_fields = ('name', 'email', 'message')
+    ordering = ('-created_at',)
 
 
 @admin.register(Article)

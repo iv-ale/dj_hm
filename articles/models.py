@@ -49,3 +49,20 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return reverse('article_detail', args=[self.pk])
+
+
+class Feedback(models.Model):
+    """Сообщение формы обратной связи: /feedback/ (урок 50, челлендж)."""
+
+    name = models.CharField('Имя', max_length=100)
+    email = models.EmailField('Email')
+    message = models.TextField('Сообщение')
+    created_at = models.DateTimeField('Создано', auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Сообщение'
+        verbose_name_plural = 'Сообщения'
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return f'{self.name} <{self.email}>'
